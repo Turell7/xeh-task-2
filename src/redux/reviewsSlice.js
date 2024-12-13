@@ -7,6 +7,7 @@ const initialState = {
     platform: '',
     minRating: 1,
     maxRating: 5,
+    searchQuery: '',
   },
   sort: {
     by: 'date', 
@@ -36,6 +37,12 @@ const reviewsSlice = createSlice({
 
       if (filters.platform) {
         result = result.filter((review) => review.platform === filters.platform);
+      }
+      
+      if (filters.searchQuery) {
+        const query = filters.searchQuery.toLowerCase();
+        const regex = new RegExp(query, "i");
+        result = result.filter((review) => review.text.toLowerCase().match(regex));
       }
 
       result = result.filter(
